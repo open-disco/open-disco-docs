@@ -1,0 +1,1134 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+    "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+<head>
+<meta http-equiv="Content-Type" content="application/xhtml+xml; charset=UTF-8" />
+<meta name="generator" content="AsciiDoc 8.6.9" />
+<title>Discovering Interoperative Services for Continuous Operation (DISCO)</title>
+<style type="text/css">
+/* Shared CSS for AsciiDoc xhtml11 and html5 backends */
+
+/* Default font. */
+body {
+  font-family: Georgia,serif;
+}
+
+/* Title font. */
+h1, h2, h3, h4, h5, h6,
+div.title, caption.title,
+thead, p.table.header,
+#toctitle,
+#author, #revnumber, #revdate, #revremark,
+#footer {
+  font-family: Arial,Helvetica,sans-serif;
+}
+
+body {
+  margin: 1em 5% 1em 5%;
+}
+
+a {
+  color: blue;
+  text-decoration: underline;
+}
+a:visited {
+  color: fuchsia;
+}
+
+em {
+  font-style: italic;
+  color: navy;
+}
+
+strong {
+  font-weight: bold;
+  color: #083194;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  color: #527bbd;
+  margin-top: 1.2em;
+  margin-bottom: 0.5em;
+  line-height: 1.3;
+}
+
+h1, h2, h3 {
+  border-bottom: 2px solid silver;
+}
+h2 {
+  padding-top: 0.5em;
+}
+h3 {
+  float: left;
+}
+h3 + * {
+  clear: left;
+}
+h5 {
+  font-size: 1.0em;
+}
+
+div.sectionbody {
+  margin-left: 0;
+}
+
+hr {
+  border: 1px solid silver;
+}
+
+p {
+  margin-top: 0.5em;
+  margin-bottom: 0.5em;
+}
+
+ul, ol, li > p {
+  margin-top: 0;
+}
+ul > li     { color: #aaa; }
+ul > li > * { color: black; }
+
+.monospaced, code, pre {
+  font-family: "Courier New", Courier, monospace;
+  font-size: inherit;
+  color: navy;
+  padding: 0;
+  margin: 0;
+}
+pre {
+  white-space: pre-wrap;
+}
+
+#author {
+  color: #527bbd;
+  font-weight: bold;
+  font-size: 1.1em;
+}
+#email {
+}
+#revnumber, #revdate, #revremark {
+}
+
+#footer {
+  font-size: small;
+  border-top: 2px solid silver;
+  padding-top: 0.5em;
+  margin-top: 4.0em;
+}
+#footer-text {
+  float: left;
+  padding-bottom: 0.5em;
+}
+#footer-badges {
+  float: right;
+  padding-bottom: 0.5em;
+}
+
+#preamble {
+  margin-top: 1.5em;
+  margin-bottom: 1.5em;
+}
+div.imageblock, div.exampleblock, div.verseblock,
+div.quoteblock, div.literalblock, div.listingblock, div.sidebarblock,
+div.admonitionblock {
+  margin-top: 1.0em;
+  margin-bottom: 1.5em;
+}
+div.admonitionblock {
+  margin-top: 2.0em;
+  margin-bottom: 2.0em;
+  margin-right: 10%;
+  color: #606060;
+}
+
+div.content { /* Block element content. */
+  padding: 0;
+}
+
+/* Block element titles. */
+div.title, caption.title {
+  color: #527bbd;
+  font-weight: bold;
+  text-align: left;
+  margin-top: 1.0em;
+  margin-bottom: 0.5em;
+}
+div.title + * {
+  margin-top: 0;
+}
+
+td div.title:first-child {
+  margin-top: 0.0em;
+}
+div.content div.title:first-child {
+  margin-top: 0.0em;
+}
+div.content + div.title {
+  margin-top: 0.0em;
+}
+
+div.sidebarblock > div.content {
+  background: #ffffee;
+  border: 1px solid #dddddd;
+  border-left: 4px solid #f0f0f0;
+  padding: 0.5em;
+}
+
+div.listingblock > div.content {
+  border: 1px solid #dddddd;
+  border-left: 5px solid #f0f0f0;
+  background: #f8f8f8;
+  padding: 0.5em;
+}
+
+div.quoteblock, div.verseblock {
+  padding-left: 1.0em;
+  margin-left: 1.0em;
+  margin-right: 10%;
+  border-left: 5px solid #f0f0f0;
+  color: #888;
+}
+
+div.quoteblock > div.attribution {
+  padding-top: 0.5em;
+  text-align: right;
+}
+
+div.verseblock > pre.content {
+  font-family: inherit;
+  font-size: inherit;
+}
+div.verseblock > div.attribution {
+  padding-top: 0.75em;
+  text-align: left;
+}
+/* DEPRECATED: Pre version 8.2.7 verse style literal block. */
+div.verseblock + div.attribution {
+  text-align: left;
+}
+
+div.admonitionblock .icon {
+  vertical-align: top;
+  font-size: 1.1em;
+  font-weight: bold;
+  text-decoration: underline;
+  color: #527bbd;
+  padding-right: 0.5em;
+}
+div.admonitionblock td.content {
+  padding-left: 0.5em;
+  border-left: 3px solid #dddddd;
+}
+
+div.exampleblock > div.content {
+  border-left: 3px solid #dddddd;
+  padding-left: 0.5em;
+}
+
+div.imageblock div.content { padding-left: 0; }
+span.image img { border-style: none; vertical-align: text-bottom; }
+a.image:visited { color: white; }
+
+dl {
+  margin-top: 0.8em;
+  margin-bottom: 0.8em;
+}
+dt {
+  margin-top: 0.5em;
+  margin-bottom: 0;
+  font-style: normal;
+  color: navy;
+}
+dd > *:first-child {
+  margin-top: 0.1em;
+}
+
+ul, ol {
+    list-style-position: outside;
+}
+ol.arabic {
+  list-style-type: decimal;
+}
+ol.loweralpha {
+  list-style-type: lower-alpha;
+}
+ol.upperalpha {
+  list-style-type: upper-alpha;
+}
+ol.lowerroman {
+  list-style-type: lower-roman;
+}
+ol.upperroman {
+  list-style-type: upper-roman;
+}
+
+div.compact ul, div.compact ol,
+div.compact p, div.compact p,
+div.compact div, div.compact div {
+  margin-top: 0.1em;
+  margin-bottom: 0.1em;
+}
+
+tfoot {
+  font-weight: bold;
+}
+td > div.verse {
+  white-space: pre;
+}
+
+div.hdlist {
+  margin-top: 0.8em;
+  margin-bottom: 0.8em;
+}
+div.hdlist tr {
+  padding-bottom: 15px;
+}
+dt.hdlist1.strong, td.hdlist1.strong {
+  font-weight: bold;
+}
+td.hdlist1 {
+  vertical-align: top;
+  font-style: normal;
+  padding-right: 0.8em;
+  color: navy;
+}
+td.hdlist2 {
+  vertical-align: top;
+}
+div.hdlist.compact tr {
+  margin: 0;
+  padding-bottom: 0;
+}
+
+.comment {
+  background: yellow;
+}
+
+.footnote, .footnoteref {
+  font-size: 0.8em;
+}
+
+span.footnote, span.footnoteref {
+  vertical-align: super;
+}
+
+#footnotes {
+  margin: 20px 0 20px 0;
+  padding: 7px 0 0 0;
+}
+
+#footnotes div.footnote {
+  margin: 0 0 5px 0;
+}
+
+#footnotes hr {
+  border: none;
+  border-top: 1px solid silver;
+  height: 1px;
+  text-align: left;
+  margin-left: 0;
+  width: 20%;
+  min-width: 100px;
+}
+
+div.colist td {
+  padding-right: 0.5em;
+  padding-bottom: 0.3em;
+  vertical-align: top;
+}
+div.colist td img {
+  margin-top: 0.3em;
+}
+
+@media print {
+  #footer-badges { display: none; }
+}
+
+#toc {
+  margin-bottom: 2.5em;
+}
+
+#toctitle {
+  color: #527bbd;
+  font-size: 1.1em;
+  font-weight: bold;
+  margin-top: 1.0em;
+  margin-bottom: 0.1em;
+}
+
+div.toclevel0, div.toclevel1, div.toclevel2, div.toclevel3, div.toclevel4 {
+  margin-top: 0;
+  margin-bottom: 0;
+}
+div.toclevel2 {
+  margin-left: 2em;
+  font-size: 0.9em;
+}
+div.toclevel3 {
+  margin-left: 4em;
+  font-size: 0.9em;
+}
+div.toclevel4 {
+  margin-left: 6em;
+  font-size: 0.9em;
+}
+
+span.aqua { color: aqua; }
+span.black { color: black; }
+span.blue { color: blue; }
+span.fuchsia { color: fuchsia; }
+span.gray { color: gray; }
+span.green { color: green; }
+span.lime { color: lime; }
+span.maroon { color: maroon; }
+span.navy { color: navy; }
+span.olive { color: olive; }
+span.purple { color: purple; }
+span.red { color: red; }
+span.silver { color: silver; }
+span.teal { color: teal; }
+span.white { color: white; }
+span.yellow { color: yellow; }
+
+span.aqua-background { background: aqua; }
+span.black-background { background: black; }
+span.blue-background { background: blue; }
+span.fuchsia-background { background: fuchsia; }
+span.gray-background { background: gray; }
+span.green-background { background: green; }
+span.lime-background { background: lime; }
+span.maroon-background { background: maroon; }
+span.navy-background { background: navy; }
+span.olive-background { background: olive; }
+span.purple-background { background: purple; }
+span.red-background { background: red; }
+span.silver-background { background: silver; }
+span.teal-background { background: teal; }
+span.white-background { background: white; }
+span.yellow-background { background: yellow; }
+
+span.big { font-size: 2em; }
+span.small { font-size: 0.6em; }
+
+span.underline { text-decoration: underline; }
+span.overline { text-decoration: overline; }
+span.line-through { text-decoration: line-through; }
+
+div.unbreakable { page-break-inside: avoid; }
+
+
+/*
+ * xhtml11 specific
+ *
+ * */
+
+div.tableblock {
+  margin-top: 1.0em;
+  margin-bottom: 1.5em;
+}
+div.tableblock > table {
+  border: 3px solid #527bbd;
+}
+thead, p.table.header {
+  font-weight: bold;
+  color: #527bbd;
+}
+p.table {
+  margin-top: 0;
+}
+/* Because the table frame attribute is overriden by CSS in most browsers. */
+div.tableblock > table[frame="void"] {
+  border-style: none;
+}
+div.tableblock > table[frame="hsides"] {
+  border-left-style: none;
+  border-right-style: none;
+}
+div.tableblock > table[frame="vsides"] {
+  border-top-style: none;
+  border-bottom-style: none;
+}
+
+
+/*
+ * html5 specific
+ *
+ * */
+
+table.tableblock {
+  margin-top: 1.0em;
+  margin-bottom: 1.5em;
+}
+thead, p.tableblock.header {
+  font-weight: bold;
+  color: #527bbd;
+}
+p.tableblock {
+  margin-top: 0;
+}
+table.tableblock {
+  border-width: 3px;
+  border-spacing: 0px;
+  border-style: solid;
+  border-color: #527bbd;
+  border-collapse: collapse;
+}
+th.tableblock, td.tableblock {
+  border-width: 1px;
+  padding: 4px;
+  border-style: solid;
+  border-color: #527bbd;
+}
+
+table.tableblock.frame-topbot {
+  border-left-style: hidden;
+  border-right-style: hidden;
+}
+table.tableblock.frame-sides {
+  border-top-style: hidden;
+  border-bottom-style: hidden;
+}
+table.tableblock.frame-none {
+  border-style: hidden;
+}
+
+th.tableblock.halign-left, td.tableblock.halign-left {
+  text-align: left;
+}
+th.tableblock.halign-center, td.tableblock.halign-center {
+  text-align: center;
+}
+th.tableblock.halign-right, td.tableblock.halign-right {
+  text-align: right;
+}
+
+th.tableblock.valign-top, td.tableblock.valign-top {
+  vertical-align: top;
+}
+th.tableblock.valign-middle, td.tableblock.valign-middle {
+  vertical-align: middle;
+}
+th.tableblock.valign-bottom, td.tableblock.valign-bottom {
+  vertical-align: bottom;
+}
+
+
+/*
+ * manpage specific
+ *
+ * */
+
+body.manpage h1 {
+  padding-top: 0.5em;
+  padding-bottom: 0.5em;
+  border-top: 2px solid silver;
+  border-bottom: 2px solid silver;
+}
+body.manpage h2 {
+  border-style: none;
+}
+body.manpage div.sectionbody {
+  margin-left: 3em;
+}
+
+@media print {
+  body.manpage div#toc { display: none; }
+}
+
+
+</style>
+<script type="text/javascript">
+/*<![CDATA[*/
+var asciidoc = {  // Namespace.
+
+/////////////////////////////////////////////////////////////////////
+// Table Of Contents generator
+/////////////////////////////////////////////////////////////////////
+
+/* Author: Mihai Bazon, September 2002
+ * http://students.infoiasi.ro/~mishoo
+ *
+ * Table Of Content generator
+ * Version: 0.4
+ *
+ * Feel free to use this script under the terms of the GNU General Public
+ * License, as long as you do not remove or alter this notice.
+ */
+
+ /* modified by Troy D. Hanson, September 2006. License: GPL */
+ /* modified by Stuart Rackham, 2006, 2009. License: GPL */
+
+// toclevels = 1..4.
+toc: function (toclevels) {
+
+  function getText(el) {
+    var text = "";
+    for (var i = el.firstChild; i != null; i = i.nextSibling) {
+      if (i.nodeType == 3 /* Node.TEXT_NODE */) // IE doesn't speak constants.
+        text += i.data;
+      else if (i.firstChild != null)
+        text += getText(i);
+    }
+    return text;
+  }
+
+  function TocEntry(el, text, toclevel) {
+    this.element = el;
+    this.text = text;
+    this.toclevel = toclevel;
+  }
+
+  function tocEntries(el, toclevels) {
+    var result = new Array;
+    var re = new RegExp('[hH]([1-'+(toclevels+1)+'])');
+    // Function that scans the DOM tree for header elements (the DOM2
+    // nodeIterator API would be a better technique but not supported by all
+    // browsers).
+    var iterate = function (el) {
+      for (var i = el.firstChild; i != null; i = i.nextSibling) {
+        if (i.nodeType == 1 /* Node.ELEMENT_NODE */) {
+          var mo = re.exec(i.tagName);
+          if (mo && (i.getAttribute("class") || i.getAttribute("className")) != "float") {
+            result[result.length] = new TocEntry(i, getText(i), mo[1]-1);
+          }
+          iterate(i);
+        }
+      }
+    }
+    iterate(el);
+    return result;
+  }
+
+  var toc = document.getElementById("toc");
+  if (!toc) {
+    return;
+  }
+
+  // Delete existing TOC entries in case we're reloading the TOC.
+  var tocEntriesToRemove = [];
+  var i;
+  for (i = 0; i < toc.childNodes.length; i++) {
+    var entry = toc.childNodes[i];
+    if (entry.nodeName.toLowerCase() == 'div'
+     && entry.getAttribute("class")
+     && entry.getAttribute("class").match(/^toclevel/))
+      tocEntriesToRemove.push(entry);
+  }
+  for (i = 0; i < tocEntriesToRemove.length; i++) {
+    toc.removeChild(tocEntriesToRemove[i]);
+  }
+
+  // Rebuild TOC entries.
+  var entries = tocEntries(document.getElementById("content"), toclevels);
+  for (var i = 0; i < entries.length; ++i) {
+    var entry = entries[i];
+    if (entry.element.id == "")
+      entry.element.id = "_toc_" + i;
+    var a = document.createElement("a");
+    a.href = "#" + entry.element.id;
+    a.appendChild(document.createTextNode(entry.text));
+    var div = document.createElement("div");
+    div.appendChild(a);
+    div.className = "toclevel" + entry.toclevel;
+    toc.appendChild(div);
+  }
+  if (entries.length == 0)
+    toc.parentNode.removeChild(toc);
+},
+
+
+/////////////////////////////////////////////////////////////////////
+// Footnotes generator
+/////////////////////////////////////////////////////////////////////
+
+/* Based on footnote generation code from:
+ * http://www.brandspankingnew.net/archive/2005/07/format_footnote.html
+ */
+
+footnotes: function () {
+  // Delete existing footnote entries in case we're reloading the footnodes.
+  var i;
+  var noteholder = document.getElementById("footnotes");
+  if (!noteholder) {
+    return;
+  }
+  var entriesToRemove = [];
+  for (i = 0; i < noteholder.childNodes.length; i++) {
+    var entry = noteholder.childNodes[i];
+    if (entry.nodeName.toLowerCase() == 'div' && entry.getAttribute("class") == "footnote")
+      entriesToRemove.push(entry);
+  }
+  for (i = 0; i < entriesToRemove.length; i++) {
+    noteholder.removeChild(entriesToRemove[i]);
+  }
+
+  // Rebuild footnote entries.
+  var cont = document.getElementById("content");
+  var spans = cont.getElementsByTagName("span");
+  var refs = {};
+  var n = 0;
+  for (i=0; i<spans.length; i++) {
+    if (spans[i].className == "footnote") {
+      n++;
+      var note = spans[i].getAttribute("data-note");
+      if (!note) {
+        // Use [\s\S] in place of . so multi-line matches work.
+        // Because JavaScript has no s (dotall) regex flag.
+        note = spans[i].innerHTML.match(/\s*\[([\s\S]*)]\s*/)[1];
+        spans[i].innerHTML =
+          "[<a id='_footnoteref_" + n + "' href='#_footnote_" + n +
+          "' title='View footnote' class='footnote'>" + n + "</a>]";
+        spans[i].setAttribute("data-note", note);
+      }
+      noteholder.innerHTML +=
+        "<div class='footnote' id='_footnote_" + n + "'>" +
+        "<a href='#_footnoteref_" + n + "' title='Return to text'>" +
+        n + "</a>. " + note + "</div>";
+      var id =spans[i].getAttribute("id");
+      if (id != null) refs["#"+id] = n;
+    }
+  }
+  if (n == 0)
+    noteholder.parentNode.removeChild(noteholder);
+  else {
+    // Process footnoterefs.
+    for (i=0; i<spans.length; i++) {
+      if (spans[i].className == "footnoteref") {
+        var href = spans[i].getElementsByTagName("a")[0].getAttribute("href");
+        href = href.match(/#.*/)[0];  // Because IE return full URL.
+        n = refs[href];
+        spans[i].innerHTML =
+          "[<a href='#_footnote_" + n +
+          "' title='View footnote' class='footnote'>" + n + "</a>]";
+      }
+    }
+  }
+},
+
+install: function(toclevels) {
+  var timerId;
+
+  function reinstall() {
+    asciidoc.footnotes();
+    if (toclevels) {
+      asciidoc.toc(toclevels);
+    }
+  }
+
+  function reinstallAndRemoveTimer() {
+    clearInterval(timerId);
+    reinstall();
+  }
+
+  timerId = setInterval(reinstall, 500);
+  if (document.addEventListener)
+    document.addEventListener("DOMContentLoaded", reinstallAndRemoveTimer, false);
+  else
+    window.onload = reinstallAndRemoveTimer;
+}
+
+}
+asciidoc.install(2);
+/*]]>*/
+</script>
+</head>
+<body class="article">
+<div id="header">
+<h1>Discovering Interoperative Services for Continuous Operation (DISCO)</h1>
+<span id="author">Mike Amundsen</span><br />
+<span id="email"><code>&lt;<a href="mailto:mca@mamund.com">mca@mamund.com</a>&gt;</code></span><br />
+<div id="toc">
+  <div id="toctitle">Table of Contents</div>
+  <noscript><p><b>JavaScript must be enabled in your browser to display the table of contents.</b></p></noscript>
+</div>
+</div>
+<div id="content">
+<div class="sect1">
+<h2 id="_status">Status</h2>
+<div class="sectionbody">
+<div class="dlist"><dl>
+<dt class="hdlist1">
+Status
+</dt>
+<dd>
+<p>
+  <strong><span class="white red-background">Working Draft</span></strong>&#8201;&#8212;&#8201;<em>Only experimental and &#8216;proof-of-concept&#8217; apps should be built on this unstable draft.</em>
+</p>
+</dd>
+</dl></div>
+<div class="dlist"><dl>
+<dt class="hdlist1">
+Repository
+</dt>
+<dd>
+<p>
+  <a href="https://github.com/rwmbook/registry-docs">https://github.com/rwmbook/registry-docs</a>
+</p>
+</dd>
+<dt class="hdlist1">
+Last Updated
+</dt>
+<dd>
+<p>
+  2018-03-10
+</p>
+</dd>
+</dl></div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_summary">Summary</h2>
+<div class="sectionbody">
+<div class="paragraph"><p>This document details an <em>adhoc specification</em> called <strong>DISCO</strong> (<strong>D</strong>iscovering <strong>I</strong>nteroperative <strong>S</strong>ervices for <strong>C</strong>ontinuous <strong>O</strong>peration). DISCO is a simple language for managing the adding/removing of services as well as the ability to search ("find") and make connections with ("bind") registered services.</p></div>
+<div class="paragraph"><p>DISCO was designed to be easy, open, lightweight, and extensible. For this reason, readers/implementers may find things "missing" or "underspecified." This is intentional. Getting started is meant to be easy. And local customization is supported as needed. This allows the DISCO spec to safely grow and improve over time without breaking exsting implementations.</p></div>
+<div class="paragraph"><p>The DISCO "language" supports the following features:</p></div>
+<div class="ulist"><ul>
+<li>
+<p>
+<code>register</code> : add a service to the shared registry
+</p>
+</li>
+<li>
+<p>
+<code>find</code> : query the registry for services (dependents) to consume
+</p>
+</li>
+<li>
+<p>
+<code>bind</code> : notify the registry the intention to connect with and use another service
+</p>
+</li>
+<li>
+<p>
+<code>renew</code> : renew a service&#8217;s registry <em>lease</em> to prove is is still up and running
+</p>
+</li>
+<li>
+<p>
+<code>unregister</code> : remove a service from the registry
+</p>
+</li>
+</ul></div>
+<div class="paragraph"><p>Optionally, services can expose a <code>health-check</code> URL to allow registries to periodically check the status of a registered service.</p></div>
+<div class="paragraph"><p>Implementing a DISCO server is a simple as exposing URLs that support each of the above actions and supporting the defined input and output arguments in one or more identified media types.</p></div>
+<div class="paragraph"><p>Implementing support for DISCO in a service (or service proxy) can be accomplished by adding method to an individual service that handle the <code>register</code>, <code>unregister</code>, and <code>renew</code> or <code>health-check</code> actions. Optionally, services can add support for the <code>find</code> and <code>bind</code> acitons if they wish to use the registry to locate other dependent services they consume.</p></div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_disco_resources">DISCO Resources</h2>
+<div class="sectionbody">
+<div class="paragraph"><p>The following resources are available for those interested using, and contributing to, the DISCO specification:</p></div>
+<div class="ulist"><ul>
+<li>
+<p>
+<a href="https://github.com/rwmbook/registry">DISCO Registry</a> (NodeJS)
+</p>
+</li>
+<li>
+<p>
+<a href="https://github.com/mamund/2018-02-sacon-workshop/tree/master/examples">DISCO Examples</a> (NodeJS &amp; HTML)
+</p>
+</li>
+<li>
+<p>
+<a href="https://github.com/rwmbook/registry-docs">DISCO Specification</a> (ASCIIDoc)
+</p>
+</li>
+</ul></div>
+<div class="admonitionblock">
+<table><tr>
+<td class="icon">
+<div class="title">Tip</div>
+</td>
+<td class="content">
+<div class="paragraph"><p>If you are working on a DISCO-related project and would like to have it listed here, add an issue in the DISCO Specification repo and we can update the doc.</p></div>
+</td>
+</tr></table>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_disco_design_goals">DISCO Design Goals</h2>
+<div class="sectionbody">
+<div class="paragraph"><p>Here are some key design goals of the DISCO specification:</p></div>
+<div class="dlist"><dl>
+<dt class="hdlist1">
+DISCO is Easy
+</dt>
+<dd>
+<p>
+The goal of DISCO is to make it safe/cheap/easy to create connections between APIs <em>at runtime</em>. Essentially, automating the process normally handled by humans (discovery at design/implementation time) and supported by CI/CD tools (resolution at build/deploy time).
+</p>
+</dd>
+<dt class="hdlist1">
+DISCO is Open
+</dt>
+<dd>
+<p>
+DISCO was also created to foster an open approach to service discovery and management. For this reason, DISCO has been implemented to run over HTTP returning standardized message formats (HTML, JSON, etc.).
+</p>
+</dd>
+<dt class="hdlist1">
+DISCO is Lightweight
+</dt>
+<dd>
+<p>
+DISCO is not meant to create a close-loop, heavy-weight approach to managing services. It follows the same ethos as DNS, HTTP, etc. by doing only the minimum needed to accomplish a goal and to make no assumptions about the hardware, software, platform, or languages used to build and interact with DISCO servers.
+</p>
+</dd>
+<dt class="hdlist1">
+DISCO is Extensible
+</dt>
+<dd>
+<p>
+DISCO was designed to be highly extensible. As long as implementers provide the required minimum service actions and support the defined semantic profile, they are free to add any number of optional features (as long as they don&#8217;t break the defined DISCO profile).
+</p>
+</dd>
+<dt class="hdlist1">
+DISCO is for the Web
+</dt>
+<dd>
+<p>
+There are some very powerful targeted platforms for managing dynamic machine instances and clusters and they work especially well for &#8216;closed communities&#8217; such as enterprises and large companies. DISCO was not created to compete with them. DISCO was designed to offer similar methods on the Web itself.
+</p>
+</dd>
+<dt class="hdlist1">
+DISCO is for Services, Not Machines
+</dt>
+<dd>
+<p>
+The target audience of the DISCO standard is the API/service developer community, not the DevOps VM/machine-instance community. DISCO allows you to register a running service, find other registered services you want to interact with, and keep track of the health of services on the Web.
+</p>
+</dd>
+</dl></div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_service_side_implementation_for_nodejs">Service-Side Implementation for NodeJS</h2>
+<div class="sectionbody">
+<div class="paragraph"><p>As part of the DISCO release, a simple NodeJS module (<code>discovery.js</code>) is available. This module can be added to any existing NodeJS project and supports all the required and optional DISCO interactions.</p></div>
+<div class="admonitionblock">
+<table><tr>
+<td class="icon">
+<div class="title">Note</div>
+</td>
+<td class="content">
+<div class="paragraph"><p>For more on the <code>discovery.js</code> module, see the <a href="https://github.com/mamund/2018-02-sacon-workshop/tree/master/examples">DISCO Examples</a> repo.</p></div>
+</td>
+</tr></table>
+</div>
+<div class="paragraph"><p>After including the module in your NodeJS project (and the accompanying <code>discovery-settings.js</code> configuration file), you can add default support for DISCO by wrapping your NodeJS <code>httpServer</code> like this:</p></div>
+<div class="listingblock">
+<div class="title">Basic DISCO Support in NodeJS</div>
+<div class="content"><!-- Generator: GNU source-highlight 3.1.6
+by Lorenzo Bettini
+http://www.lorenzobettini.it
+http://www.gnu.org/software/src-highlite -->
+<pre><tt><span style="font-style: italic"><span style="color: #9A1900">// register this service w/ defaults</span></span>
+discovery<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">register</span></span><span style="color: #990000">(</span><span style="font-weight: bold"><span style="color: #0000FF">null</span></span><span style="color: #990000">,</span> <span style="font-weight: bold"><span style="color: #0000FF">function</span></span><span style="color: #990000">(</span>response<span style="color: #990000">)</span> <span style="color: #FF0000">{</span>
+
+  <span style="font-style: italic"><span style="color: #9A1900">// sample service discovery action</span></span>
+  discovery<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">find</span></span><span style="color: #990000">(</span><span style="font-weight: bold"><span style="color: #0000FF">null</span></span><span style="color: #990000">,</span> <span style="font-weight: bold"><span style="color: #0000FF">function</span></span><span style="color: #990000">(</span>data<span style="color: #990000">,</span> response<span style="color: #990000">)</span> <span style="color: #FF0000">{</span>
+
+    <span style="font-style: italic"><span style="color: #9A1900">// select endpoints from query</span></span>
+    <span style="font-weight: bold"><span style="color: #0000FF">if</span></span><span style="color: #990000">(</span>data<span style="color: #990000">.</span>success<span style="color: #990000">===</span><span style="font-weight: bold"><span style="color: #0000FF">true</span></span><span style="color: #990000">)</span> <span style="color: #FF0000">{</span>
+      <span style="font-style: italic"><span style="color: #9A1900">// launch http server</span></span>
+      http<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">createServer</span></span><span style="color: #990000">(</span>zipServer<span style="color: #990000">).</span><span style="font-weight: bold"><span style="color: #000000">listen</span></span><span style="color: #990000">(</span><span style="color: #993399">8080</span><span style="color: #990000">);</span>
+      console<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">info</span></span><span style="color: #990000">(</span><span style="color: #FF0000">'zip-server running on port 8080.'</span><span style="color: #990000">);</span>
+    <span style="color: #FF0000">}</span>
+    <span style="font-weight: bold"><span style="color: #0000FF">else</span></span> <span style="color: #FF0000">{</span>
+      console<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">error</span></span><span style="color: #990000">(</span><span style="color: #FF0000">'unable to bind to dependent services'</span><span style="color: #990000">);</span>
+      process<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">kill</span></span><span style="color: #990000">(</span>process<span style="color: #990000">.</span>pid<span style="color: #990000">,</span> <span style="color: #FF0000">"SIGTERM"</span><span style="color: #990000">);</span>
+    <span style="color: #FF0000">}</span>
+  <span style="color: #FF0000">}</span><span style="color: #990000">);</span>
+<span style="color: #FF0000">}</span><span style="color: #990000">);</span></tt></pre></div></div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_the_disco_registry_specification">The DISCO Registry Specification</h2>
+<div class="sectionbody">
+<div class="paragraph"><p>The DISCO Registry Specification describes the actions (required and optional) as well as all the input and output parameters for each action. The prototype DISCO Registry is implemented over HTTP and generates both HTML and JSON responses.</p></div>
+<div class="admonitionblock">
+<table><tr>
+<td class="icon">
+<div class="title">Tip</div>
+</td>
+<td class="content">
+<div class="paragraph"><p>You can find the source code for the prototype DISCO Registry server in the <a href="https://github.com/rwmbook/registry">DISCO Registry</a> repo.</p></div>
+</td>
+</tr></table>
+</div>
+<div class="sect2">
+<h3 id="_disco_registry_service_sequence_diagram">DISCO Registry Service Sequence Diagram</h3>
+<div class="paragraph"><p>Below is a simple sequence diagram that shows how the DISCO server interacts with external services.</p></div>
+<div class="imageblock">
+<div class="content">
+<img src="https://www.websequencediagrams.com/files/render?link=VAP2LhXDVStI3rJOL7ma" alt="https://www.websequencediagrams.com/files/render?link=VAP2LhXDVStI3rJOL7ma" />
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_disco_registry_service_basics">DISCO Registry Service Basics</h3>
+<div class="paragraph"><p>Below are a list of basic guidelines for implementing a DISCO Registry</p></div>
+<div class="dlist"><dl>
+<dt class="hdlist1">
+Standard Protocols and Formats
+</dt>
+<dd>
+<p>
+The DISCO Registry Service is an open specification based on Web standards. It SHOULD support network interactions over the HTTP protocol and MAY support other protocols. It SHOULD support both HTML and JSON message formats and MAY support other formats which should be negotiable at runtime.
+</p>
+</dd>
+<dt class="hdlist1">
+Security
+</dt>
+<dd>
+<p>
+DISCO Registries MAY require user-level security to be accessed (e.g. via the <code>WWW-Authentication</code> header over HTTP). DISCO Registries MAY implement authorization checks to restrict any user&#8217;s ability to view data or execute actions. The authentication and authorization details are not part of this specification and SHOULD be implemented using existing open standards and well-documented for each implementation.
+</p>
+</dd>
+<dt class="hdlist1">
+Extensions
+</dt>
+<dd>
+<p>
+DISCO Registries are free to implement additional extensions by adding new data fields and/or actions to the list of supported elements. However, these extensions MUST NOT remove or redfine any exsiting DISCO specifications. All extensions MUST be backward and forward compatible with the published DISCO specifications.
+</p>
+</dd>
+</dl></div>
+</div>
+<div class="sect2">
+<h3 id="_disco_registry_service_actions">DISCO Registry Service Actions</h3>
+<div class="paragraph"><p>The DISCO Registry Service includes the following Actions:</p></div>
+<div class="dlist"><dl>
+<dt class="hdlist1">
+<strong><code>register</code></strong>
+</dt>
+<dd>
+<p>
+The <code>register</code> action is used by a <em>service</em> to register with a DISCO <em>registry</em>. This SHOULD be iniated by the service at start up (or when it is deployed into production). The <code>register</code> action has two required data elements <code>serviceName</code> (e.g. "UserMangement") and <code>serviceURL</code> (e.g. <code>http://example.com/services/user-mgmt/</code>). The service MAY be able to pass additional parameters to the registry, but these MAY be ignored. The <code>register</code> action MUST return a <code>registryID</code>&#8201;&#8212;&#8201;a unqiue value&#8201;&#8212;&#8201;to the service for use in subsequent interactions.
+</p>
+</dd>
+<dt class="hdlist1">
+<strong><code>unregister</code></strong>
+</dt>
+<dd>
+<p>
+The <code>unregister</code> action is used by a <em>service</em> to remove itself from the DISCO registry. This SHOULD be initiated whenever the service is stopped (either by controlled means, or a crash). The <em>service</em> MUST pass the <code>registryID</code> that is associated with the service to remove. The registry MAY require additional information in this request. Upon successfully &#8216;unregistering&#8217; the service, the registry server SHOULD respond with <code>200 OK</code>. The registry MAY return additional data but the service MAY ignore this information.
+</p>
+</dd>
+<dt class="hdlist1">
+<strong><code>renew</code></strong>
+</dt>
+<dd>
+<p>
+The <code>renew</code> action is used by a <em>service</em> to &#8216;ping&#8217; the registry&#8201;&#8212;&#8201;a means of proving the service is still up and running. The <em>service</em> MUST pass the <code>registryID</code> that is associated with the serve entry to renew. The registry MAY require additional information with this request. Upon success, the registry SHOULD respond with <code>200 OK</code>. The registry MAY return additional data but the service MAY ignore it.
+</p>
+</dd>
+<dt class="hdlist1">
+<strong><code>find</code></strong>
+</dt>
+<dd>
+<p>
+The <code>find</code> action is used by a <em>service</em> to query the registry for a list of service that match a search criteria. This is a way for services to "ask" a registry for a pointer to one or more services that can fulfill a need for that service (e.g. "Hey, registry, are there any services running that support credit card payments over HTTP using application/json?").  Services SHOULD send a list of search values for one or more fields (see the list below) and the registry SHOULD return one or more service records that match the criteria. The returned list MUST include the <code>serviceURL</code> of services that match the search cirteria and MAY include additional fields. Registries are free to decide the manner in which the search is fulfilled, the order of the service, list, etc. Services can then use the returned <code>serviceURL</code> to initiate interactions with the target service directly.
+</p>
+</dd>
+<dt class="hdlist1">
+<strong><code>bind</code></strong>
+</dt>
+<dd>
+<p>
+The <code>bind</code> action is used by a <em>service</em> to inform the registry that the service intends to "use" that service in subsequent interactions. The service MUST pass the <code>registryID</code> of the source service (the one "asking" for a connection) and MUST pass the <code>registryID</code> of the target service to be "used." This is an OPTIONAL action and MAY NOT be supported by the registry. If it is supported, the registry MUST return <code>200 OK</code> upon a successful completion of the request. the registry SHOULD also return a <code>bindToken</code> value. This value MAY be used in subsequent interactions between the source and target services. The registry MAY return more information but it MAY be ignored by the service.
+</p>
+</dd>
+<dt class="hdlist1">
+<strong><code>health</code></strong>
+</dt>
+<dd>
+<p>
+The <code>health</code> action is used by the <em>registry</em> to check on the health of a registered service. The registry MUST use the <code>healthURL</code> provided by the <em>service</em> when that service completed the <code>register</code> action. The registry SHOULD honor the <code>healthTTL</code> value (in msec) provided by the _service at registration, too. Upon recieving a request from the registry, the service SHOULD return a list of status values and key information about the health of the running service. This is an OPTIONAL element. Registries MAY NOT make health checks and services MAY NOT respond to health requests from the registry.
+</p>
+<div class="paragraph"><p><strong>NOTE</strong>: Registries are responsible for determining when to &#8216;evict&#8217; a service entry from their listings if/when the service is no longer sending <code>renew</code> requests or responding to registry <code>health</code> requests. To maintain their entry in the registry, services SHOULD support either <code>renew</code> or <code>health</code> or possibly both.</p></div>
+</dd>
+</dl></div>
+<div class="admonitionblock">
+<table><tr>
+<td class="icon">
+<div class="title">Tip</div>
+</td>
+<td class="content">
+<div class="paragraph"><p>For a full description of the DISCO Registry service interface, see the ALPS (Application-Level Profile Semantics) document in the <a href="https://github.com/rwmbook/registry">DISCO Registry</a> repo.</p></div>
+</td>
+</tr></table>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_registry_bind_tokens">Registry Bind Tokens</h2>
+<div class="sectionbody">
+<div class="paragraph"><p>When a service uses the registry to locate ("find") other services to use, that registry MAY offer a "bind" action. This action is meant to represent the intent source service (requestor) to use the target service in some future interactions. The result of this bind action MAY be a <code>bindToken</code>&#8201;&#8212;&#8201;a value that contains metadata about both the services and the registry involved in making the connection between the two services. The target service MAY ask the requestor service supply the registry&#8217;s <code>bindToken</code> as a way to validate or in some other way track service use and registry interactions.</p></div>
+<div class="admonitionblock">
+<table><tr>
+<td class="icon">
+<div class="title">Note</div>
+</td>
+<td class="content">
+<div class="paragraph"><p>The format of the <code>bindToken</code> is designed to allow for customizable extensions. This specification only deines two elements of the <code>bindToken</code>: <code>type</code> and <code>token</code>. This specification only defines one token type: <code>simple</code>. Registries or other service groups MAY define their own token types in the future and they should document then sufficiently.</p></div>
+</td>
+</tr></table>
+</div>
+<div class="sect2">
+<h3 id="_the_simple_bind_token">The Simple Bind Token</h3>
+<div class="paragraph"><p>The <code>simple</code> bind token contains the following information:</p></div>
+<div class="paragraph"><p><code>bindToken = simple:&lt;base64-body&gt;</code></p></div>
+<div class="paragraph"><p><code>&lt;base64-body&gt; = registryKey:sourceRegistryID:targetRegistryID:utc-date-time</code></p></div>
+<div class="ulist"><ul>
+<li>
+<p>
+<code>registryKey</code> is the unique ID of the registry that brokered the bind.
+</p>
+</li>
+<li>
+<p>
+<code>sourceRegistryID</code> is the unqiue ID of the source service (the &#8216;requestor&#8217;)
+</p>
+</li>
+<li>
+<p>
+<code>targetRegistryID</code> is the unique ID of the target service (the one to be &#8216;used&#8217;)
+</p>
+</li>
+<li>
+<p>
+<code>uts-date-time</code> is the UTC-formatted date-time the binding token was created.
+</p>
+</li>
+</ul></div>
+<div class="paragraph"><p>Here&#8217;s an example <code>bindToken</code>:</p></div>
+<div class="listingblock">
+<div class="title">Simple Bind Token</div>
+<div class="content">
+<pre><code>Start with the following values:
+ - "registryKey":"ecc01cda-689a-4237-9590-9be7d45bd5ad",
+ - "sourceRegID":"22i52uadfbr",
+ - "targetRegID":"2qfe1yzbnms",
+ - "dateCreated":"Sun, 11 Mar 2018 02:08:20 GMT"
+
+Create a token string:
+  ecc01cda-689a-4237-9590-9be7d45bd5ad:22i52uadfbr:2qfe1yzbnms:Sun, 11 Mar 2018 02:08:20 GMT
+
+Convert the token string to base64 and prefix with the bindToken type of 'simple'
+  simple:ZWNjM...gR01U</code></pre>
+</div></div>
+</div>
+</div>
+</div>
+</div>
+<div id="footnotes"><hr /></div>
+<div id="footer">
+<div id="footer-text">
+Last updated 2018-03-10 21:22:21 EST
+</div>
+</div>
+</body>
+</html>
