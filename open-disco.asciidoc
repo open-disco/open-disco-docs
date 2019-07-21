@@ -3,6 +3,8 @@
 :email: mca@mamund.com
 :toc:
 
+image::open-disco-logo.jpeg[logo]
+
 == Status
 Status::
   *[white red-background]#Working Draft#* -- _Only experimental and `proof-of-concept' apps should be built on this unstable draft._
