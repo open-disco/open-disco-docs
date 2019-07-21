@@ -15,7 +15,7 @@ Status::
 ////
 
 Repository::
-  https://github.com/rwmbook/registry-docs[]
+  https://github.com/open-disco/open-disco-docs[]
   
 Last Updated::
   {docdate}
