@@ -19,6 +19,9 @@ Status::
 Repository::
   https://github.com/open-disco/open-disco-docs[]
   
+Email List::
+  https://groups.google.com/forum/#!forum/open-disco[]  
+
 Last Updated::
   {docdate}
 
@@ -44,9 +47,9 @@ Implementing support for DISCO in a service (or service proxy) can be accomplish
 == DISCO Resources
 The following resources are available for those interested using, and contributing to, the DISCO specification:
 
- * https://github.com/rwmbook/registry[DISCO Registry] (NodeJS)
- * https://github.com/mamund/2018-02-sacon-workshop/tree/master/examples[DISCO Examples] (NodeJS & HTML)
- * https://github.com/rwmbook/registry-docs[DISCO Specification] (ASCIIDoc)
+ * https://github.com/open-disco/registry[DISCO Registry] (NodeJS)
+ * https://github.com/open-disco[DISCO Master Repo] (NodeJS & HTML)
+ * https://github.com/open-disco/open-disco-docs/[DISCO Specification] (ASCIIDoc)
 
 [TIP]
 ====
