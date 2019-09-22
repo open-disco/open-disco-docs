@@ -162,6 +162,45 @@ The +health+ action is used by the _registry_ to check on the health of a regist
 For a full description of the DISCO Registry service interface, see the ALPS (Application-Level Profile Semantics) document in the https://github.com/rwmbook/registry[DISCO Registry] repo.
 ====
 
+== DISCO Registry Vocabulary
+The semantic vocabulary for the DISCO specification includes both property names and action names. The complete vocabulary can be found in the ALPS (Application-Level Profile Semantics) document found here: https://github.com/open-disco/registry/blob/master/disco-alps.xml. 
+
+== DISCO Search 
+All DISCO registry servers SHOULD implement basic search support (for the +find+ action). The internal records for DISCO servers currently have the following fields defined:
+
+----
+  <descriptor id="registryURL" type="semantic" text="URL of registry" />
+  <descriptor id="registryID" type="semantic" text="unique registry id of the service"/>
+  <descriptor id="serviceURL" type="semantic" text="URL of service" />
+  <descriptor id="serviceName" type="semantic" text="text name of service, non-unique" />
+  <descriptor id="tags" type="semantic" text="space separated lists of filter tag words" />
+  <descriptor id="status" type="semantic" text="current status of service [up, down, unknown" />
+  <descriptor id="profile" type="semantic" text="space separated list of profile URIs" />
+  <descriptor id="mediaType" type="semantic" text="space separated list of mediaType identifiers" />
+  <descriptor id="healthURL" type="semantic" text="URL to use when sending health-check pings" />
+  <descriptor id="healthTTL" type="semantic" text="time-to-live (in seconds) for a valid health-check response" />
+  <descriptor id="healthLast" type="semantic" text="last date/time registry receigved a ping from the service" />
+  <descriptor id="bindCount" type="semantic" text="count (estimate) of clients using this service" />
+  <descriptor id="renewURL" type="semantic" text="URL to use when renewing the registry entry" />
+  <descriptor id="renewTTL" type="semantic" text="time-to-live (in seconds) for a valid renewal" />
+  <descriptor id="renewLast" type="semantic" text="last date/time of successful renewal" />
+----
+
+=== Other Search Considerations
+Below are some other considerations when implementing search (+find+) support for DISCO servers.
+
+Search Implementation supports _CONTAINS_::
+All of these fields SHOULD be exposed are URL query parameters. Searches SHOULD be executed as a "contains" query (e.g. +?tags=accounting+ means "the tag fields contains the string 'accounting'"). 
+
+Some field values are transient::
+Note that some fields are local to the registry server (+registryURL+), only good for a particular running instance (+registryID+, +regDateTime+), or are temporary (+status+, +healthLast+, +bindCount+, +renewLast+). Others are static and SHOULD be the same across multiple instances of the same service (+serviceName+, +tags+, +profile+, +mediatype+, +healthURL+, +healthTTL+, +renewURL+, +renewTTL+). 
+
+All fields are valid::
+Registry servers SHOULD support searches on all these fields even if all these fields are not supported and/or contain null values in the registry's data storage. This means registry servers MUST NOT return error codes when requests pass fields not supported or fields w/ empty values.
+
+Additional fields are possible::
+Reigstry servers MAY support additional fields for searching. If they do, these registries MUST NOT change the list of current fields (take them away, change their meaning) and all additional fields MUST be treated as OPTIONAL (e.g. you cannot create a new REQUIRED field for passing search queries to the registry). Registries that have additional search fields SHOULD signal their custom support using an additional profile record (ALPS is recommended) to signal the new fields that are supported. These registries MUST also emit the default profile record and MUST NOT reject queries based on the default profile.
+
 == Registry Bind Tokens
 When a service uses the registry to locate ("find") other services to use, that registry MAY offer a "bind" action. This action is meant to represent the intent source service (requestor) to use the target service in some future interactions. The result of this bind action MAY be a +bindToken+ -- a value that contains metadata about both the services and the registry involved in making the connection between the two services. The target service MAY ask the requestor service supply the registry's +bindToken+ as a way to validate or in some other way track service use and registry interactions.
 

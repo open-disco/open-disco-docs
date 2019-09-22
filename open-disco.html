@@ -786,7 +786,7 @@ Last Updated
 </dt>
 <dd>
 <p>
-  2019-08-02
+  2019-09-22
 </p>
 </dd>
 </dl></div>
@@ -1081,6 +1081,74 @@ The <code>health</code> action is used by the <em>registry</em> to check on the 
 </div>
 </div>
 <div class="sect1">
+<h2 id="_disco_registry_vocabulary">DISCO Registry Vocabulary</h2>
+<div class="sectionbody">
+<div class="paragraph"><p>The semantic vocabulary for the DISCO specification includes both property names and action names. The complete vocabulary can be found in the ALPS (Application-Level Profile Semantics) document found here: <a href="https://github.com/open-disco/registry/blob/master/disco-alps.xml">https://github.com/open-disco/registry/blob/master/disco-alps.xml</a>.</p></div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_disco_search">DISCO Search</h2>
+<div class="sectionbody">
+<div class="paragraph"><p>All DISCO registry servers SHOULD implement basic search support (for the <code>find</code> action). The internal records for DISCO servers currently have the following fields defined:</p></div>
+<div class="listingblock">
+<div class="content">
+<pre><code>  &lt;descriptor id="registryURL" type="semantic" text="URL of registry" /&gt;
+  &lt;descriptor id="registryID" type="semantic" text="unique registry id of the service"/&gt;
+  &lt;descriptor id="serviceURL" type="semantic" text="URL of service" /&gt;
+  &lt;descriptor id="serviceName" type="semantic" text="text name of service, non-unique" /&gt;
+  &lt;descriptor id="tags" type="semantic" text="space separated lists of filter tag words" /&gt;
+  &lt;descriptor id="status" type="semantic" text="current status of service [up, down, unknown" /&gt;
+  &lt;descriptor id="profile" type="semantic" text="space separated list of profile URIs" /&gt;
+  &lt;descriptor id="mediaType" type="semantic" text="space separated list of mediaType identifiers" /&gt;
+  &lt;descriptor id="healthURL" type="semantic" text="URL to use when sending health-check pings" /&gt;
+  &lt;descriptor id="healthTTL" type="semantic" text="time-to-live (in seconds) for a valid health-check response" /&gt;
+  &lt;descriptor id="healthLast" type="semantic" text="last date/time registry receigved a ping from the service" /&gt;
+  &lt;descriptor id="bindCount" type="semantic" text="count (estimate) of clients using this service" /&gt;
+  &lt;descriptor id="renewURL" type="semantic" text="URL to use when renewing the registry entry" /&gt;
+  &lt;descriptor id="renewTTL" type="semantic" text="time-to-live (in seconds) for a valid renewal" /&gt;
+  &lt;descriptor id="renewLast" type="semantic" text="last date/time of successful renewal" /&gt;</code></pre>
+</div></div>
+<div class="sect2">
+<h3 id="_other_search_considerations">Other Search Considerations</h3>
+<div class="paragraph"><p>Below are some other considerations when implementing search (<code>find</code>) support for DISCO servers.</p></div>
+<div class="dlist"><dl>
+<dt class="hdlist1">
+Search Implementation supports <em>CONTAINS</em>
+</dt>
+<dd>
+<p>
+All of these fields SHOULD be exposed are URL query parameters. Searches SHOULD be executed as a "contains" query (e.g. <code>?tags=accounting</code> means "the tag fields contains the string <em>accounting</em>").
+</p>
+</dd>
+<dt class="hdlist1">
+Some field values are transient
+</dt>
+<dd>
+<p>
+Note that some fields are local to the registry server (<code>registryURL</code>), only good for a particular running instance (<code>registryID</code>, <code>regDateTime</code>), or are temporary (<code>status</code>, <code>healthLast</code>, <code>bindCount</code>, <code>renewLast</code>). Others are static and SHOULD be the same across multiple instances of the same service (<code>serviceName</code>, <code>tags</code>, <code>profile</code>, <code>mediatype</code>, <code>healthURL</code>, <code>healthTTL</code>, <code>renewURL</code>, <code>renewTTL</code>).
+</p>
+</dd>
+<dt class="hdlist1">
+All fields are valid
+</dt>
+<dd>
+<p>
+Registry servers SHOULD support searches on all these fields even if all these fields are not supported and/or contain null values in the registry&#8217;s data storage. This means registry servers MUST NOT return error codes when requests pass fields not supported or fields w/ empty values.
+</p>
+</dd>
+<dt class="hdlist1">
+Additional fields are possible
+</dt>
+<dd>
+<p>
+Reigstry servers MAY support additional fields for searching. If they do, these registries MUST NOT change the list of current fields (take them away, change their meaning) and all additional fields MUST be treated as OPTIONAL (e.g. you cannot create a new REQUIRED field for passing search queries to the registry). Registries that have additional search fields SHOULD signal their custom support using an additional profile record (ALPS is recommended) to signal the new fields that are supported. These registries MUST also emit the default profile record and MUST NOT reject queries based on the default profile.
+</p>
+</dd>
+</dl></div>
+</div>
+</div>
+</div>
+<div class="sect1">
 <h2 id="_registry_bind_tokens">Registry Bind Tokens</h2>
 <div class="sectionbody">
 <div class="paragraph"><p>When a service uses the registry to locate ("find") other services to use, that registry MAY offer a "bind" action. This action is meant to represent the intent source service (requestor) to use the target service in some future interactions. The result of this bind action MAY be a <code>bindToken</code>&#8201;&#8212;&#8201;a value that contains metadata about both the services and the registry involved in making the connection between the two services. The target service MAY ask the requestor service supply the registry&#8217;s <code>bindToken</code> as a way to validate or in some other way track service use and registry interactions.</p></div>
@@ -1144,7 +1212,7 @@ Convert the token string to base64 and prefix with the bindToken type of 'simple
 <div id="footnotes"><hr /></div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2019-08-02 11:26:12 EDT
+Last updated 2019-09-22 14:43:23 EDT
 </div>
 </div>
 </body>
