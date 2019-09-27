@@ -42,7 +42,7 @@ Optionally, services can expose a +health-check+ URL to allow registries to peri
 
 Implementing a DISCO server is a simple as exposing URLs that support each of the above actions and supporting the defined input and output arguments in one or more identified media types.
 
-Implementing support for DISCO in a service (or service proxy) can be accomplished by adding method to an individual service that handle the +register+, +unregister+, and +renew+ or +health-check+ actions. Optionally, services can add support for the +find+ and +bind+ acitons if they wish to use the registry to locate other dependent services they consume.
+Implementing support for DISCO in a service (or service proxy) can be accomplished by adding method to an individual service that handle the +register+, +unregister+, and +renew+ or +health-check+ actions. Optionally, services can add support for the +find+ and +bind+ actions if they wish to use the registry to locate other dependent services they consume.
 
 == DISCO Resources
 The following resources are available for those interested using, and contributing to, the DISCO specification:
