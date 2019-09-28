@@ -42,7 +42,7 @@ Optionally, services can expose a +health-check+ URL to allow registries to peri
 
 Implementing a DISCO server is a simple as exposing URLs that support each of the above actions and supporting the defined input and output arguments in one or more identified media types.
 
-Implementing support for DISCO in a service (or service proxy) can be accomplished by adding method to an individual service that handle the +register+, +unregister+, and +renew+ or +health-check+ actions. Optionally, services can add support for the +find+ and +bind+ acitons if they wish to use the registry to locate other dependent services they consume.
+Implementing support for DISCO in a service (or service proxy) can be accomplished by adding method to an individual service that handle the +register+, +unregister+, and +renew+ or +health-check+ actions. Optionally, services can add support for the +find+ and +bind+ actions if they wish to use the registry to locate other dependent services they consume.
 
 == DISCO Resources
 The following resources are available for those interested using, and contributing to, the DISCO specification:
@@ -138,19 +138,19 @@ DISCO Registries are free to implement additional extensions by adding new data 
 The DISCO Registry Service includes the following Actions:
 
 *+register+*::
-The +register+ action is used by a _service_ to register with a DISCO _registry_. This SHOULD be iniated by the service at start up (or when it is deployed into production). The +register+ action has two required data elements +serviceName+ (e.g. "UserMangement") and +serviceURL+ (e.g. +http://example.com/services/user-mgmt/+). The service MAY be able to pass additional parameters to the registry, but these MAY be ignored. The +register+ action MUST return a +registryID+ -- a unqiue value -- to the service for use in subsequent interactions.
+The +register+ action is used by a _service_ to register with a DISCO _registry_. This SHOULD be iniated by the service at start up (or when it is deployed into production). The +register+ action has two required data elements +serviceName+ (e.g. "UserMangement") and +serviceURL+ (e.g. +http://example.com/services/user-mgmt/+). Upon successfully registering the service, the registry server SHOULD response with a +201 Created+ and a +Location+ header with a URL to the new service. The service MAY be able to pass additional parameters to the registry, but these MAY be ignored. The +register+ action MUST return a +registryID+ -- a unqiue value -- to the service for use in subsequent interactions.
 
 *+unregister+*::
-The +unregister+ action is used by a _service_ to remove itself from the DISCO registry. This SHOULD be initiated whenever the service is stopped (either by controlled means, or a crash). The _service_ MUST pass the +registryID+ that is associated with the service to remove. The registry MAY require additional information in this request. Upon successfully `unregistering' the service, the registry server SHOULD respond with +200 OK+. The registry MAY return additional data but the service MAY ignore this information.
+The +unregister+ action is used by a _service_ to remove itself from the DISCO registry. This SHOULD be initiated whenever the service is stopped (either by controlled means, or a crash). The _service_ MUST pass the +registryID+ that is associated with the service to remove. The registry MAY require additional information in this request. Upon successfully `unregistering' the service, the registry server SHOULD respond with +204 No Content+. The registry MAY return additional data but the service MAY ignore this information.
 
 *+renew+*::
-The +renew+ action is used by a _service_ to `ping' the registry -- a means of proving the service is still up and running. The _service_ MUST pass the +registryID+ that is associated with the serve entry to renew. The registry MAY require additional information with this request. Upon success, the registry SHOULD respond with +200 OK+. The registry MAY return additional data but the service MAY ignore it.
+The +renew+ action is used by a _service_ to `ping' the registry -- a means of proving the service is still up and running. The _service_ MUST pass the +registryID+ that is associated with the service entry to renew. The registry MAY require additional information with this request. Upon success, the registry SHOULD respond with +200 OK+. The registry MAY return additional data but the service MAY ignore it.
 
 *+find+*::
-The +find+ action is used by a _service_ to query the registry for a list of service that match a search criteria. This is a way for services to "ask" a registry for a pointer to one or more services that can fulfill a need for that service (e.g. "Hey, registry, are there any services running that support credit card payments over HTTP using application/json?").  Services SHOULD send a list of search values for one or more fields (see the list below) and the registry SHOULD return one or more service records that match the criteria. The returned list MUST include the +serviceURL+ of services that match the search cirteria and MAY include additional fields. Registries are free to decide the manner in which the search is fulfilled, the order of the service, list, etc. Services can then use the returned +serviceURL+ to initiate interactions with the target service directly.
+The +find+ action is used by a _service_ to query the registry for a list of service that match a search criteria. This is a way for services to "ask" a registry for a pointer to one or more services that can fulfill a need for that service (e.g. "Hey, registry, are there any services running that support credit card payments over HTTP using application/json?").  Services SHOULD send a list of search values for one or more fields (see the list below) and the registry SHOULD return zero or more service records that match the criteria. The returned list MUST include the +serviceURL+ of services that match the search cirteria and MAY include additional fields. Registries are free to decide the manner in which the search is fulfilled, the order of the service, list, etc. Services can then use the returned +serviceURL+ to initiate interactions with the target service directly.
  
 *+bind+*::
-The +bind+ action is used by a _service_ to inform the registry that the service intends to "use" that service in subsequent interactions. The service MUST pass the +registryID+ of the source service (the one "asking" for a connection) and MUST pass the +registryID+ of the target service to be "used." This is an OPTIONAL action and MAY NOT be supported by the registry. If it is supported, the registry MUST return +200 OK+ upon a successful completion of the request. the registry SHOULD also return a +bindToken+ value. This value MAY be used in subsequent interactions between the source and target services. The registry MAY return more information but it MAY be ignored by the service.
+The +bind+ action is used by a _service_ to inform the registry that the service intends to "use" that service in subsequent interactions. The service MUST pass the +registryID+ of the source service (the one "asking" for a connection, +sourceRegistryID+) and MUST pass the +registryID+ of the target service to be "used" (+targetRegistryID+). This is an OPTIONAL action and MAY NOT be supported by the registry. If it is supported, the registry MUST return +201 Created+ and a +Location+ header with a URL to the new service binding, upon a successful completion of the request. The registry SHOULD also return a +bindToken+ value. This value MAY be used in subsequent interactions between the source and target services. The registry MAY return more information but it MAY be ignored by the service.
 
 *+health+*::
 The +health+ action is used by the _registry_ to check on the health of a registered service. The registry MUST use the +healthURL+ provided by the _service_ when that service completed the +register+ action. The registry SHOULD honor the +healthTTL+ value (in msec) provided by the _service at registration, too. Upon recieving a request from the registry, the service SHOULD return a list of status values and key information about the health of the running service. This is an OPTIONAL element. Registries MAY NOT make health checks and services MAY NOT respond to health requests from the registry.
@@ -175,15 +175,15 @@ All DISCO registry servers SHOULD implement basic search support (for the +find+
   <descriptor id="serviceName" type="semantic" text="text name of service, non-unique" />
   <descriptor id="tags" type="semantic" text="space separated lists of filter tag words" />
   <descriptor id="status" type="semantic" text="current status of service [up, down, unknown" />
-  <descriptor id="profile" type="semantic" text="space separated list of profile URIs" />
+  <descriptor id="semanticProfile" type="semantic" text="space separated list of profile URIs" />
   <descriptor id="mediaType" type="semantic" text="space separated list of mediaType identifiers" />
   <descriptor id="healthURL" type="semantic" text="URL to use when sending health-check pings" />
   <descriptor id="healthTTL" type="semantic" text="time-to-live (in seconds) for a valid health-check response" />
-  <descriptor id="healthLast" type="semantic" text="last date/time registry receigved a ping from the service" />
+  <descriptor id="healthLastPing" type="semantic" text="last date/time registry receigved a ping from the service" />
   <descriptor id="bindCount" type="semantic" text="count (estimate) of clients using this service" />
   <descriptor id="renewURL" type="semantic" text="URL to use when renewing the registry entry" />
   <descriptor id="renewTTL" type="semantic" text="time-to-live (in seconds) for a valid renewal" />
-  <descriptor id="renewLast" type="semantic" text="last date/time of successful renewal" />
+  <descriptor id="renewLastPing" type="semantic" text="last date/time of successful renewal" />
 ----
 
 === Other Search Considerations
@@ -193,7 +193,7 @@ Search Implementation supports _CONTAINS_::
 All of these fields SHOULD be exposed are URL query parameters. Searches SHOULD be executed as a "contains" query (e.g. +?tags=accounting+ means "the tag fields contains the string 'accounting'"). 
 
 Some field values are transient::
-Note that some fields are local to the registry server (+registryURL+), only good for a particular running instance (+registryID+, +regDateTime+), or are temporary (+status+, +healthLast+, +bindCount+, +renewLast+). Others are static and SHOULD be the same across multiple instances of the same service (+serviceName+, +tags+, +profile+, +mediatype+, +healthURL+, +healthTTL+, +renewURL+, +renewTTL+). 
+Note that some fields are local to the registry server (+registryURL+), only good for a particular running instance (+registryID+), or are temporary (+status+, +healthLastPing+, +bindCount+, +renewLastPing+). Others are static and SHOULD be the same across multiple instances of the same service (+serviceName+, +tags+, +semanticProfile+, +mediaType+, +healthURL+, +healthTTL+, +renewURL+, +renewTTL+). 
 
 All fields are valid::
 Registry servers SHOULD support searches on all these fields even if all these fields are not supported and/or contain null values in the registry's data storage. This means registry servers MUST NOT return error codes when requests pass fields not supported or fields w/ empty values.
@@ -227,8 +227,8 @@ Here's an example +bindToken+:
 ----
 Start with the following values:
  - "registryKey":"ecc01cda-689a-4237-9590-9be7d45bd5ad",
- - "sourceRegID":"22i52uadfbr",
- - "targetRegID":"2qfe1yzbnms",
+ - "sourceRegistryID":"22i52uadfbr",
+ - "targetRegistryID":"2qfe1yzbnms",
  - "dateCreated":"Sun, 11 Mar 2018 02:08:20 GMT"
 
 Create a token string:
