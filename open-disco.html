@@ -786,7 +786,7 @@ Last Updated
 </dt>
 <dd>
 <p>
-  2019-09-22
+  2019-09-27
 </p>
 </dd>
 </dl></div>
@@ -827,7 +827,7 @@ Last Updated
 </ul></div>
 <div class="paragraph"><p>Optionally, services can expose a <code>health-check</code> URL to allow registries to periodically check the status of a registered service.</p></div>
 <div class="paragraph"><p>Implementing a DISCO server is a simple as exposing URLs that support each of the above actions and supporting the defined input and output arguments in one or more identified media types.</p></div>
-<div class="paragraph"><p>Implementing support for DISCO in a service (or service proxy) can be accomplished by adding method to an individual service that handle the <code>register</code>, <code>unregister</code>, and <code>renew</code> or <code>health-check</code> actions. Optionally, services can add support for the <code>find</code> and <code>bind</code> acitons if they wish to use the registry to locate other dependent services they consume.</p></div>
+<div class="paragraph"><p>Implementing support for DISCO in a service (or service proxy) can be accomplished by adding method to an individual service that handle the <code>register</code>, <code>unregister</code>, and <code>renew</code> or <code>health-check</code> actions. Optionally, services can add support for the <code>find</code> and <code>bind</code> actions if they wish to use the registry to locate other dependent services they consume.</p></div>
 </div>
 </div>
 <div class="sect1">
@@ -936,28 +936,26 @@ The target audience of the DISCO standard is the API/service developer community
 <div class="paragraph"><p>After including the module in your NodeJS project (and the accompanying <code>discovery-settings.js</code> configuration file), you can add default support for DISCO by wrapping your NodeJS <code>httpServer</code> like this:</p></div>
 <div class="listingblock">
 <div class="title">Basic DISCO Support in NodeJS</div>
-<div class="content"><!-- Generator: GNU source-highlight 3.1.6
-by Lorenzo Bettini
-http://www.lorenzobettini.it
-http://www.gnu.org/software/src-highlite -->
-<pre><tt><span style="font-style: italic"><span style="color: #9A1900">// register this service w/ defaults</span></span>
-discovery<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">register</span></span><span style="color: #990000">(</span><span style="font-weight: bold"><span style="color: #0000FF">null</span></span><span style="color: #990000">,</span> <span style="font-weight: bold"><span style="color: #0000FF">function</span></span><span style="color: #990000">(</span>response<span style="color: #990000">)</span> <span style="color: #FF0000">{</span>
+<div class="content">
+<pre><code>// register this service w/ defaults
+discovery.register(null, function(response) {
 
-  <span style="font-style: italic"><span style="color: #9A1900">// sample service discovery action</span></span>
-  discovery<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">find</span></span><span style="color: #990000">(</span><span style="font-weight: bold"><span style="color: #0000FF">null</span></span><span style="color: #990000">,</span> <span style="font-weight: bold"><span style="color: #0000FF">function</span></span><span style="color: #990000">(</span>data<span style="color: #990000">,</span> response<span style="color: #990000">)</span> <span style="color: #FF0000">{</span>
+  // sample service discovery action
+  discovery.find(null, function(data, response) {
 
-    <span style="font-style: italic"><span style="color: #9A1900">// select endpoints from query</span></span>
-    <span style="font-weight: bold"><span style="color: #0000FF">if</span></span><span style="color: #990000">(</span>data<span style="color: #990000">.</span>success<span style="color: #990000">===</span><span style="font-weight: bold"><span style="color: #0000FF">true</span></span><span style="color: #990000">)</span> <span style="color: #FF0000">{</span>
-      <span style="font-style: italic"><span style="color: #9A1900">// launch http server</span></span>
-      http<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">createServer</span></span><span style="color: #990000">(</span>zipServer<span style="color: #990000">).</span><span style="font-weight: bold"><span style="color: #000000">listen</span></span><span style="color: #990000">(</span><span style="color: #993399">8080</span><span style="color: #990000">);</span>
-      console<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">info</span></span><span style="color: #990000">(</span><span style="color: #FF0000">'zip-server running on port 8080.'</span><span style="color: #990000">);</span>
-    <span style="color: #FF0000">}</span>
-    <span style="font-weight: bold"><span style="color: #0000FF">else</span></span> <span style="color: #FF0000">{</span>
-      console<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">error</span></span><span style="color: #990000">(</span><span style="color: #FF0000">'unable to bind to dependent services'</span><span style="color: #990000">);</span>
-      process<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">kill</span></span><span style="color: #990000">(</span>process<span style="color: #990000">.</span>pid<span style="color: #990000">,</span> <span style="color: #FF0000">"SIGTERM"</span><span style="color: #990000">);</span>
-    <span style="color: #FF0000">}</span>
-  <span style="color: #FF0000">}</span><span style="color: #990000">);</span>
-<span style="color: #FF0000">}</span><span style="color: #990000">);</span></tt></pre></div></div>
+    // select endpoints from query
+    if(data.success===true) {
+      // launch http server
+      http.createServer(zipServer).listen(8080);
+      console.info('zip-server running on port 8080.');
+    }
+    else {
+      console.error('unable to bind to dependent services');
+      process.kill(process.pid, "SIGTERM");
+    }
+  });
+});</code></pre>
+</div></div>
 </div>
 </div>
 <div class="sect1">
@@ -973,6 +971,11 @@ discovery<span style="color: #990000">.</span><span style="font-weight: bold"><s
 <div class="paragraph"><p>You can find the source code for the prototype DISCO Registry server in the <a href="https://github.com/rwmbook/registry">DISCO Registry</a> repo.</p></div>
 </td>
 </tr></table>
+</div>
+<div class="sect2">
+<h3 id="_disco_registry_service_definitions">DISCO Registry Service Definitions</h3>
+<div class="paragraph"><p>An up-to-date copy of the <strong>DISCO Registry Service</strong> can be found at <a href="http://rwmbook-registry.herokuapp.com/files/openapi.yaml">http://rwmbook-registry.herokuapp.com/files/openapi.yaml</a>. There is an HTML rendering of the OpenAPI document here: <a href="http://rwmbook-registry.herokuapp.com/files/openapi.html">http://rwmbook-registry.herokuapp.com/files/openapi.html</a>.</p></div>
+<div class="paragraph"><p>You can also find an ALPS-XML document for the <strong>DISCO Registry Service</strong> here: <a href="http://rwmbook-registry.herokuapp.com/files/disco-alps.xml">http://rwmbook-registry.herokuapp.com/files/disco-alps.xml</a>.</p></div>
 </div>
 <div class="sect2">
 <h3 id="_disco_registry_service_sequence_diagram">DISCO Registry Service Sequence Diagram</h3>
@@ -1022,7 +1025,7 @@ DISCO Registries are free to implement additional extensions by adding new data 
 </dt>
 <dd>
 <p>
-The <code>register</code> action is used by a <em>service</em> to register with a DISCO <em>registry</em>. This SHOULD be iniated by the service at start up (or when it is deployed into production). The <code>register</code> action has two required data elements <code>serviceName</code> (e.g. "UserMangement") and <code>serviceURL</code> (e.g. <code>http://example.com/services/user-mgmt/</code>). The service MAY be able to pass additional parameters to the registry, but these MAY be ignored. The <code>register</code> action MUST return a <code>registryID</code>&#8201;&#8212;&#8201;a unqiue value&#8201;&#8212;&#8201;to the service for use in subsequent interactions.
+The <code>register</code> action is used by a <em>service</em> to register with a DISCO <em>registry</em>. This SHOULD be iniated by the service at start up (or when it is deployed into production). The <code>register</code> action has two required data elements <code>serviceName</code> (e.g. "UserMangement") and <code>serviceURL</code> (e.g. <code>http://example.com/services/user-mgmt/</code>). Upon successfully registering the service, the registry server SHOULD response with a <code>201 Created</code> and a <code>Location</code> header with a URL to the new service. The service MAY be able to pass additional parameters to the registry, but these MAY be ignored. The <code>register</code> action MUST return a <code>registryID</code>&#8201;&#8212;&#8201;a unqiue value&#8201;&#8212;&#8201;to the service for use in subsequent interactions.
 </p>
 </dd>
 <dt class="hdlist1">
@@ -1030,7 +1033,7 @@ The <code>register</code> action is used by a <em>service</em> to register with 
 </dt>
 <dd>
 <p>
-The <code>unregister</code> action is used by a <em>service</em> to remove itself from the DISCO registry. This SHOULD be initiated whenever the service is stopped (either by controlled means, or a crash). The <em>service</em> MUST pass the <code>registryID</code> that is associated with the service to remove. The registry MAY require additional information in this request. Upon successfully &#8216;unregistering&#8217; the service, the registry server SHOULD respond with <code>200 OK</code>. The registry MAY return additional data but the service MAY ignore this information.
+The <code>unregister</code> action is used by a <em>service</em> to remove itself from the DISCO registry. This SHOULD be initiated whenever the service is stopped (either by controlled means, or a crash). The <em>service</em> MUST pass the <code>registryID</code> that is associated with the service to remove. The registry MAY require additional information in this request. Upon successfully &#8216;unregistering&#8217; the service, the registry server SHOULD respond with <code>204 No Content</code>. The registry MAY return additional data but the service MAY ignore this information.
 </p>
 </dd>
 <dt class="hdlist1">
@@ -1038,7 +1041,7 @@ The <code>unregister</code> action is used by a <em>service</em> to remove itsel
 </dt>
 <dd>
 <p>
-The <code>renew</code> action is used by a <em>service</em> to &#8216;ping&#8217; the registry&#8201;&#8212;&#8201;a means of proving the service is still up and running. The <em>service</em> MUST pass the <code>registryID</code> that is associated with the serve entry to renew. The registry MAY require additional information with this request. Upon success, the registry SHOULD respond with <code>200 OK</code>. The registry MAY return additional data but the service MAY ignore it.
+The <code>renew</code> action is used by a <em>service</em> to &#8216;ping&#8217; the registry&#8201;&#8212;&#8201;a means of proving the service is still up and running. The <em>service</em> MUST pass the <code>registryID</code> that is associated with the service entry to renew. The registry MAY require additional information with this request. Upon success, the registry SHOULD respond with <code>200 OK</code>. The registry MAY return additional data but the service MAY ignore it.
 </p>
 </dd>
 <dt class="hdlist1">
@@ -1046,7 +1049,7 @@ The <code>renew</code> action is used by a <em>service</em> to &#8216;ping&#8217
 </dt>
 <dd>
 <p>
-The <code>find</code> action is used by a <em>service</em> to query the registry for a list of service that match a search criteria. This is a way for services to "ask" a registry for a pointer to one or more services that can fulfill a need for that service (e.g. "Hey, registry, are there any services running that support credit card payments over HTTP using application/json?").  Services SHOULD send a list of search values for one or more fields (see the list below) and the registry SHOULD return one or more service records that match the criteria. The returned list MUST include the <code>serviceURL</code> of services that match the search cirteria and MAY include additional fields. Registries are free to decide the manner in which the search is fulfilled, the order of the service, list, etc. Services can then use the returned <code>serviceURL</code> to initiate interactions with the target service directly.
+The <code>find</code> action is used by a <em>service</em> to query the registry for a list of service that match a search criteria. This is a way for services to "ask" a registry for a pointer to one or more services that can fulfill a need for that service (e.g. "Hey, registry, are there any services running that support credit card payments over HTTP using application/json?").  Services SHOULD send a list of search values for one or more fields (see the list below) and the registry SHOULD return zero or more service records that match the criteria. The returned list MUST include the <code>serviceURL</code> of services that match the search cirteria and MAY include additional fields. Registries are free to decide the manner in which the search is fulfilled, the order of the service, list, etc. Services can then use the returned <code>serviceURL</code> to initiate interactions with the target service directly.
 </p>
 </dd>
 <dt class="hdlist1">
@@ -1054,7 +1057,7 @@ The <code>find</code> action is used by a <em>service</em> to query the registry
 </dt>
 <dd>
 <p>
-The <code>bind</code> action is used by a <em>service</em> to inform the registry that the service intends to "use" that service in subsequent interactions. The service MUST pass the <code>registryID</code> of the source service (the one "asking" for a connection) and MUST pass the <code>registryID</code> of the target service to be "used." This is an OPTIONAL action and MAY NOT be supported by the registry. If it is supported, the registry MUST return <code>200 OK</code> upon a successful completion of the request. the registry SHOULD also return a <code>bindToken</code> value. This value MAY be used in subsequent interactions between the source and target services. The registry MAY return more information but it MAY be ignored by the service.
+The <code>bind</code> action is used by a <em>service</em> to inform the registry that the service intends to "use" that service in subsequent interactions. The service MUST pass the <code>registryID</code> of the source service (the one "asking" for a connection, <code>sourceRegistryID</code>) and MUST pass the <code>registryID</code> of the target service to be "used" (<code>targetRegistryID</code>). This is an OPTIONAL action and MAY NOT be supported by the registry. If it is supported, the registry MUST return <code>201 Created</code> and a <code>Location</code> header with a URL to the new service binding, upon a successful completion of the request. The registry SHOULD also return a <code>bindToken</code> value. This value MAY be used in subsequent interactions between the source and target services. The registry MAY return more information but it MAY be ignored by the service.
 </p>
 </dd>
 <dt class="hdlist1">
@@ -1098,15 +1101,15 @@ The <code>health</code> action is used by the <em>registry</em> to check on the 
   &lt;descriptor id="serviceName" type="semantic" text="text name of service, non-unique" /&gt;
   &lt;descriptor id="tags" type="semantic" text="space separated lists of filter tag words" /&gt;
   &lt;descriptor id="status" type="semantic" text="current status of service [up, down, unknown" /&gt;
-  &lt;descriptor id="profile" type="semantic" text="space separated list of profile URIs" /&gt;
+  &lt;descriptor id="semanticProfile" type="semantic" text="space separated list of profile URIs" /&gt;
   &lt;descriptor id="mediaType" type="semantic" text="space separated list of mediaType identifiers" /&gt;
   &lt;descriptor id="healthURL" type="semantic" text="URL to use when sending health-check pings" /&gt;
   &lt;descriptor id="healthTTL" type="semantic" text="time-to-live (in seconds) for a valid health-check response" /&gt;
-  &lt;descriptor id="healthLast" type="semantic" text="last date/time registry receigved a ping from the service" /&gt;
+  &lt;descriptor id="healthLastPing" type="semantic" text="last date/time registry receigved a ping from the service" /&gt;
   &lt;descriptor id="bindCount" type="semantic" text="count (estimate) of clients using this service" /&gt;
   &lt;descriptor id="renewURL" type="semantic" text="URL to use when renewing the registry entry" /&gt;
   &lt;descriptor id="renewTTL" type="semantic" text="time-to-live (in seconds) for a valid renewal" /&gt;
-  &lt;descriptor id="renewLast" type="semantic" text="last date/time of successful renewal" /&gt;</code></pre>
+  &lt;descriptor id="renewLastPing" type="semantic" text="last date/time of successful renewal" /&gt;</code></pre>
 </div></div>
 <div class="sect2">
 <h3 id="_other_search_considerations">Other Search Considerations</h3>
@@ -1125,7 +1128,7 @@ Some field values are transient
 </dt>
 <dd>
 <p>
-Note that some fields are local to the registry server (<code>registryURL</code>), only good for a particular running instance (<code>registryID</code>, <code>regDateTime</code>), or are temporary (<code>status</code>, <code>healthLast</code>, <code>bindCount</code>, <code>renewLast</code>). Others are static and SHOULD be the same across multiple instances of the same service (<code>serviceName</code>, <code>tags</code>, <code>profile</code>, <code>mediatype</code>, <code>healthURL</code>, <code>healthTTL</code>, <code>renewURL</code>, <code>renewTTL</code>).
+Note that some fields are local to the registry server (<code>registryURL</code>), only good for a particular running instance (<code>registryID</code>), or are temporary (<code>status</code>, <code>healthLastPing</code>, <code>bindCount</code>, <code>renewLastPing</code>). Others are static and SHOULD be the same across multiple instances of the same service (<code>serviceName</code>, <code>tags</code>, <code>semanticProfile</code>, <code>mediaType</code>, <code>healthURL</code>, <code>healthTTL</code>, <code>renewURL</code>, <code>renewTTL</code>).
 </p>
 </dd>
 <dt class="hdlist1">
@@ -1195,8 +1198,8 @@ Reigstry servers MAY support additional fields for searching. If they do, these 
 <div class="content">
 <pre><code>Start with the following values:
  - "registryKey":"ecc01cda-689a-4237-9590-9be7d45bd5ad",
- - "sourceRegID":"22i52uadfbr",
- - "targetRegID":"2qfe1yzbnms",
+ - "sourceRegistryID":"22i52uadfbr",
+ - "targetRegistryID":"2qfe1yzbnms",
  - "dateCreated":"Sun, 11 Mar 2018 02:08:20 GMT"
 
 Create a token string:
@@ -1212,7 +1215,8 @@ Convert the token string to base64 and prefix with the bindToken type of 'simple
 <div id="footnotes"><hr /></div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2019-09-22 14:43:23 EDT
+Last updated
+ 2019-09-27 23:07:18 EDT
 </div>
 </div>
 </body>

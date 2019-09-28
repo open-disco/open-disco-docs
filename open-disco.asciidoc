@@ -87,7 +87,6 @@ For more on the +discovery.js+ module, see the https://github.com/mamund/2018-02
 After including the module in your NodeJS project (and the accompanying +discovery-settings.js+ configuration file), you can add default support for DISCO by wrapping your NodeJS +httpServer+ like this:
 
 .Basic DISCO Support in NodeJS
-[source, javascript]
 ----
 // register this service w/ defaults
 discovery.register(null, function(response) {
@@ -116,6 +115,11 @@ The DISCO Registry Specification describes the actions (required and optional) a
 ====
 You can find the source code for the prototype DISCO Registry server in the https://github.com/rwmbook/registry[DISCO Registry] repo. 
 ====
+
+===  DISCO Registry Service Definitions
+An up-to-date copy of the *DISCO Registry Service* can be found at http://rwmbook-registry.herokuapp.com/files/openapi.yaml[]. There is an HTML rendering of the OpenAPI document here: http://rwmbook-registry.herokuapp.com/files/openapi.html[].
+
+You can also find an ALPS-XML document for the *DISCO Registry Service* here: http://rwmbook-registry.herokuapp.com/files/disco-alps.xml[].
 
 === DISCO Registry Service Sequence Diagram
 Below is a simple sequence diagram that shows how the DISCO server interacts with external services.
